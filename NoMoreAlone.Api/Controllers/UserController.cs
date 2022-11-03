@@ -24,18 +24,8 @@ namespace NoMoreAlone.Api.Controllers
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
-        {
-            var user = new User() 
-            {
-                Code = "123456",
-                Email = "Daniel@teste.com",
-                Name = "Daniel",
-                Password = "teste"
-            };
-
-            var userMapped = _mapper.Map<UserCreateDto>(user);
-
-            return Ok(userMapped);
+        {            
+            return Ok();
         }
 
         [HttpPost]
