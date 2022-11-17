@@ -5,8 +5,26 @@ using NoMoreAlone.Infra.Contracts;
 
 namespace NoMoreAlone.Infra
 {
-    public class Connection
+    public class Connection : IConnection
     {
-        public string connectionString { get; set; }
+        Task<IEnumerable<T>> IConnection.BuscarTodos<T>(string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<T> IConnection.BuscarUnicoObjetoPorCampoUnico<T>(string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> IConnection.DeletarPorId(string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> IConnection.Inserir(string query)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

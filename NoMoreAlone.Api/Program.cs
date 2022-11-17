@@ -9,11 +9,11 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
 //Add dependency injection
+builder.Services.AddScoped<IConnection, ConnectionSQLite>();
 builder.Services.AddScoped<ICaronaRepository, CaronaRepository>();
 builder.Services.AddScoped<IAgglomerationRepository, AgglomerationRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-builder.Services.AddSingleton(new Connection { connectionString = builder.Configuration["NoMoreAloneLocal"]});
 
 
 builder.Services.AddControllers();

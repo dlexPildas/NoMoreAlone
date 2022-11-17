@@ -9,6 +9,9 @@ namespace NoMoreAlone.Api.AutoMapper
         public CaronaMapper()
         {
             CreateMap<Carona, CaronaCreateDto>().ReverseMap();
+            CreateMap<Carona, CaronaReadDto>()
+                .ForMember(dest => dest.Tipo, act => act.MapFrom(src => src.Tipo.ToString()))
+                .ReverseMap();
         }
     }
 }

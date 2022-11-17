@@ -7,6 +7,7 @@ namespace NoMoreAlone.Infra.Contracts
         Task<IEnumerable<Carona>> BuscarCaronas();
         
         Task<Carona> BuscarCaronaPorId(int id);
+        Task<IEnumerable<Carona>> BuscarCaronasPorDono(int donoId);
 
         Task<bool> InserirCarona(Carona carona);
         

@@ -7,9 +7,9 @@ namespace NoMoreAlone.Infra.Repositories
 {
     public class CaronaRepository : ICaronaRepository
     {
-        private readonly Connection _connection;
+        private readonly IConnection _connection;
 
-        public CaronaRepository(Connection connection)
+        public CaronaRepository(IConnection connection)
         {
             _connection = connection;
         }
@@ -18,50 +18,42 @@ namespace NoMoreAlone.Infra.Repositories
         {
             string query = $"SELECT * FROM carona;";
 
-            using (MySqlConnection conexao = new MySqlConnection(_connection.connectionString))
-            {
-                return await conexao.QueryAsync<Carona>(query); ;
-            }
+            return await _connection.BuscarTodos<Carona>(query);
         }
 
         public async Task<Carona> BuscarCaronaPorId(int id)
         {
-            string query = $@"SELECT * FROM carona c inner join user u on c.Dono = u.Id WHERE c.Id = {id};";
+            string query = $@"SELECT * FROM carona c 
+                            INNER JOIN user u ON c.Dono = u.Id 
+                            WHERE c.Id = {id};";
 
-            using (MySqlConnection conexao = new MySqlConnection(_connection.connectionString))
-            {
-                var result = await conexao.QueryAsync<Carona, User, Carona>(
-                    query,
-                    (c, u) =>
-                    {
-                        if (u != null) c.DonoCarona = u;
-                        return c;
-                    }
-                );
-                return result?.FirstOrDefault();
-            }
+            return await _connection.BuscarUnicoObjetoPorCampoUnico<Carona>(query);
+        }
+
+        public async Task<IEnumerable<Carona>> BuscarCaronasPorDono(int donoId)
+        {
+            string query = $"SELECT * FROM carona WHERE Dono = {donoId};";
+
+            return await _connection.BuscarTodos<Carona>(query);
         }
 
         public async Task<bool> InserirCarona(Carona carona)
         {
             string query = $@"INSERT INTO carona 
                             (Data, PontoPartida, PontoChegada, QuantidadePessoas, Tipo, Dono)
-                            VALUES ('{carona.Data.ToString("yyyy-MM-dd HH:mm:ss")}', '{carona.PontoPartida}', '{carona.PontoChegada}', {carona.QuantidadePessoas}, '{carona.Tipo.ToString()}', {carona.Dono});";
+                            VALUES (
+                                '{carona.Data.ToString("yyyy-MM-dd HH:mm:ss")}', '{carona.PontoPartida}', '{carona.PontoChegada}', 
+                                {carona.QuantidadePessoas}, '{carona.Tipo.ToString()}', {carona.Dono}
+                            );";
 
-            using (MySqlConnection conexao = new MySqlConnection(_connection.connectionString))
-            {
-                return await conexao.ExecuteAsync(query) > 0;
-            }
+            return await _connection.Inserir(query);
         }
 
         public async Task<bool> DeletarCaronaPorId(int id)
         {
             string query = $"delete from carona WHERE id = {id};";
 
-            using (MySqlConnection conexao = new MySqlConnection(_connection.connectionString))
-            {
-                return await conexao.ExecuteAsync(query) > 0;
-            }
+            return await _connection.DeletarPorId(query);
         }
     }
 }
