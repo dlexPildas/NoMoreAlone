@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using NoMoreAlone.Api.Dtos.User;
 using NoMoreAlone.Domain.Models;
+using NoMoreAlone.Infra.Contracts;
 
 namespace NoMoreAlone.Api.Controllers
 {
@@ -10,33 +11,49 @@ namespace NoMoreAlone.Api.Controllers
     public class UserController : ControllerBase
     {
         private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepository;
 
-        public UserController(IMapper mapper)
+        public UserController(IMapper mapper, IUserRepository userRepository)
         {
             _mapper = mapper;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok();
+            var users = await _userRepository.BuscarUsers();
+
+            return Ok(users);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {            
-            return Ok();
+            var user = await _userRepository.BuscarUserPorId(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
         }
 
         [HttpPost]
-        public IActionResult Create(UserCreateDto userCreateDto)
+        public async Task<IActionResult> Create(UserCreateDto userCreateDto)
         {
+            var user = _mapper.Map<User>(userCreateDto);
+            
+            await _userRepository.InserirUser(user);
+            
             return Ok();
         }
 
-        [HttpPut]
-        public IActionResult Update(UserUpdateDto userUpdateDto)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
+            await _userRepository.DeletarUserPorId(id);
+
             return Ok();
         }
     }
