@@ -6,7 +6,7 @@ namespace NoMoreAlone.Infra
 {
     public class ConnectionSQLite : IConnection
     {
-        public async Task<T> BuscarUnicoObjetoPorCampoUnico<T>(string query)
+        public async Task<T> BuscarUnicoObjetoPorFiltro<T>(string query)
         {
             using (var conexao = new SqliteConnection("Data Source=C:/IFSP/1_semestre/Projeto_Interdisciplinar/DataBase/no_more_alone.db"))
             {

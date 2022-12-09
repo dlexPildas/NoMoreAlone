@@ -10,6 +10,8 @@ namespace NoMoreAlone.Api.AutoMapper
         {
             CreateMap<User, UserCreateDto>().ReverseMap();
             CreateMap<User, UserUpdateDto>().ReverseMap();
+            CreateMap<User, UserLoginDto>().ReverseMap();
+            CreateMap<User, UserReadDto>().ReverseMap();
         }
     }
 }

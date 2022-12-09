@@ -56,5 +56,20 @@ namespace NoMoreAlone.Api.Controllers
 
             return Ok();
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(UserLoginDto userLoginDto)
+        {
+            var user = await _userRepository.BuscarUsuarioPorMatriculaESenha(userLoginDto.Senha, userLoginDto.Matricula);
+
+            if(user == null) 
+            {
+                return NotFound();
+            }
+            
+            var userMapped = _mapper.Map<UserReadDto>(user);
+            
+            return Ok(userMapped);
+        }
     }
 }

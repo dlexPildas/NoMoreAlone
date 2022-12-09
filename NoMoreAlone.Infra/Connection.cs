@@ -12,7 +12,7 @@ namespace NoMoreAlone.Infra
             throw new NotImplementedException();
         }
 
-        Task<T> IConnection.BuscarUnicoObjetoPorCampoUnico<T>(string query)
+        Task<T> IConnection.BuscarUnicoObjetoPorFiltro<T>(string query)
         {
             throw new NotImplementedException();
         }

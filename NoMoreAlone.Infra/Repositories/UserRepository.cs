@@ -16,7 +16,7 @@ namespace NoMoreAlone.Infra.Repositories
         {
             string query = $"SELECT * FROM user WHERE Id = {id};";
 
-            var user = await _connection.BuscarUnicoObjetoPorCampoUnico<User>(query);
+            var user = await _connection.BuscarUnicoObjetoPorFiltro<User>(query);
 
             return user;
         }
@@ -28,6 +28,15 @@ namespace NoMoreAlone.Infra.Repositories
             var users = await _connection.BuscarTodos<User>(query);
 
             return users;
+        }
+
+        public async Task<User> BuscarUsuarioPorMatriculaESenha(string senha, int matricula)
+        {
+            string query = $"SELECT * FROM user WHERE Senha = '{senha}' AND Matricula = {matricula};";
+
+            var user = await _connection.BuscarUnicoObjetoPorFiltro<User>(query);
+
+            return user;
         }
 
         public async Task<bool> DeletarUserPorId(int id)

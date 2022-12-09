@@ -11,24 +11,34 @@ namespace NoMoreAlone.Api.Controllers;
 public class CaronaController : ControllerBase
 {
     private readonly ICaronaRepository _caronaRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
 
-    public CaronaController(ICaronaRepository caronaRepository, IMapper mapper)
+    public CaronaController(ICaronaRepository caronaRepository, IUserRepository userRepository, IMapper mapper)
     {
         _caronaRepository = caronaRepository;
+        _userRepository = userRepository;
         _mapper = mapper;
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> BuscarCaronas()
     {
         var caronas = await _caronaRepository.BuscarCaronas();
 
         return Ok(_mapper.Map<List<CaronaReadDto>>(caronas));
     }
+    
+    [HttpGet("usuario/{usuarioId}")]
+    public async Task<IActionResult> BuscarCaronasPorUsuario(int usuarioId)
+    {
+        var caronas = await _caronaRepository.BuscarCaronasPorDono(usuarioId);
+
+        return Ok(_mapper.Map<List<CaronaReadDto>>(caronas));
+    }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> BuscarCaronaPorId(int id)
     {
         var carona = await _caronaRepository.BuscarCaronaPorId(id);
 
@@ -41,7 +51,7 @@ public class CaronaController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CaronaCreateDto caronaCreateDto)
+    public async Task<IActionResult> CriarCarona([FromBody] CaronaCreateDto caronaCreateDto)
     {
         var caronasDoUsuario = await _caronaRepository.BuscarCaronasPorDono(caronaCreateDto.Dono);
 
@@ -58,6 +68,23 @@ public class CaronaController : ControllerBase
     public IActionResult Update(CaronaUpdateDto caronaUpdateDto)
     {
         return Ok();
+    }
+    
+    [HttpPut("{idCarona}/passageiro/{idUsuario}/reservar")]
+    public async Task<IActionResult> ReservarCarona(int idCarona, int idUsuario)
+    {
+        var caronaExiste = await _caronaRepository.BuscarCaronaPorId(idCarona);
+        if (caronaExiste == null) return NotFound(new { error = "A carona não foi encontrada" });
+
+        var usuarioExiste = await _userRepository.BuscarUserPorId(idUsuario);
+        if (usuarioExiste == null) return NotFound(new { error = "Usuário não encontrado" });
+
+
+        var result = await _caronaRepository.ReservarCarona(idCarona, idUsuario);
+        
+        if (result == true) return Ok();
+
+        return Conflict(new { error = "Houve ao fazer a reserva da carona :( " }); 
     }
     
     

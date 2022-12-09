@@ -12,5 +12,6 @@ namespace NoMoreAlone.Infra.Contracts
         Task<bool> InserirCarona(Carona carona);
         
         Task<bool> DeletarCaronaPorId(int id);
+        Task<bool> ReservarCarona(int idCarona, int idPassageiro);
     }
 }

@@ -27,7 +27,7 @@ namespace NoMoreAlone.Infra.Repositories
                             INNER JOIN user u ON c.Dono = u.Id 
                             WHERE c.Id = {id};";
 
-            return await _connection.BuscarUnicoObjetoPorCampoUnico<Carona>(query);
+            return await _connection.BuscarUnicoObjetoPorFiltro<Carona>(query);
         }
 
         public async Task<IEnumerable<Carona>> BuscarCaronasPorDono(int donoId)
@@ -54,6 +54,16 @@ namespace NoMoreAlone.Infra.Repositories
             string query = $"delete from carona WHERE id = {id};";
 
             return await _connection.DeletarPorId(query);
+        }
+
+        public async Task<bool> ReservarCarona(int idCarona, int idPassageiro)
+        {
+            string query = $@"INSERT INTO carona_user (IdUsuario, IdCarona, DataReserva)
+                            VALUES (
+                                {idPassageiro}, {idCarona}, '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}'
+                            );";
+
+            return await _connection.Inserir(query);
         }
     }
 }

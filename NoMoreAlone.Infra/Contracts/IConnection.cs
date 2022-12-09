@@ -4,7 +4,7 @@ namespace NoMoreAlone.Infra.Contracts
 {
     public interface IConnection
     {
-        Task<T> BuscarUnicoObjetoPorCampoUnico<T>(string query);
+        Task<T> BuscarUnicoObjetoPorFiltro<T>(string query);
 
         Task<bool> Inserir(string query);
 

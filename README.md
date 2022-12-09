@@ -7,6 +7,7 @@ CREATE TABLE `no_more_alone_db`.`user` (
   `Telefone` VARCHAR(45) NULL,
   `Semestre` INT NULL,
   `Curso` VARCHAR(45) NULL,
+  `Senha` VARCHAR(100) NULL,
   PRIMARY KEY (`Id`)
 );
 
@@ -17,6 +18,7 @@ CREATE TABLE `no_more_alone_db`.`carona` (
   `PontoChegada` VARCHAR(100) NOT NULL,
   `QuantidadePessoas` INT NOT NULL,
   `Tipo` ENUM('CARRO', 'BUSAO') NOT NULL,
+  `Preco` DECIMAL(19, 4) NULL,
   `Dono` INT NOT NULL,
   PRIMARY KEY (`Id`),
   INDEX `Dono_idx` (`Dono` ASC) VISIBLE,
@@ -62,6 +64,7 @@ CREATE TABLE `no_more_alone_db`.`carona_user` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `IdUsuario` INT NOT NULL,
   `IdCarona` INT NOT NULL,
+  `DataReserva` DATETIME NOT NULL,
   PRIMARY KEY (`Id`),
   INDEX `IdCarona_idx` (`IdCarona` ASC) VISIBLE,
   INDEX `IdUsuario_idx` (`IdUsuario` ASC) VISIBLE,
