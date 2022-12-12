@@ -13,5 +13,6 @@ namespace NoMoreAlone.Infra.Contracts
         Task<bool> DeletarUserPorId(int id);
 
         Task<User> BuscarUsuarioPorMatriculaESenha(string senha, int matricula);
+        Task<List<User>> BuscarUsuariosDeUmaCarona(int idCarona);
     }
 }

@@ -39,6 +39,19 @@ namespace NoMoreAlone.Infra.Repositories
             return user;
         }
 
+        public async Task<List<User>> BuscarUsuariosDeUmaCarona(int idCarona)
+        {
+            string query = @$"select u.* from carona_user ca 
+                            inner join user u on ca.IdUsuario = u.Id
+                            where ca.IdCarona = {idCarona};";
+
+            var users = await _connection.BuscarTodos<User>(query);
+
+            if(users == null) return new List<User> {};
+
+            return users.ToList();
+        }
+
         public async Task<bool> DeletarUserPorId(int id)
         {
             string query = $"DELETE FROM user WHERE Id = {id};";

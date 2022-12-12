@@ -21,10 +21,16 @@ public class CaronaController : ControllerBase
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="dataCarona"></param>
+    /// <param name="origemDestino"></param>
+    /// <returns></returns>
     [HttpGet]
-    public async Task<IActionResult> BuscarCaronas()
+    public async Task<IActionResult> BuscarCaronas([FromQuery] CaronaFiltroDto filtro)
     {
-        var caronas = await _caronaRepository.BuscarCaronas();
+        var caronas = await _caronaRepository.BuscarCaronas(filtro.data > DateTime.MinValue ? filtro.data : null, filtro.origemDestino);
 
         return Ok(_mapper.Map<List<CaronaReadDto>>(caronas));
     }
@@ -45,7 +51,10 @@ public class CaronaController : ControllerBase
         if (carona == null)
         {
             return NotFound();
-        }        
+        }
+
+        var passageirosDaCarona = await _userRepository.BuscarUsuariosDeUmaCarona(carona.Id);
+        carona.Passageiros = passageirosDaCarona;
 
         return Ok(_mapper.Map<CaronaReadDto>(carona));
     }
@@ -74,17 +83,21 @@ public class CaronaController : ControllerBase
     public async Task<IActionResult> ReservarCarona(int idCarona, int idUsuario)
     {
         var caronaExiste = await _caronaRepository.BuscarCaronaPorId(idCarona);
-        if (caronaExiste == null) return NotFound(new { error = "A carona não foi encontrada" });
+        if (caronaExiste == null) 
+            return NotFound(new { error = "A carona não foi encontrada" });
 
         var usuarioExiste = await _userRepository.BuscarUserPorId(idUsuario);
-        if (usuarioExiste == null) return NotFound(new { error = "Usuário não encontrado" });
+        if (usuarioExiste == null) 
+            return NotFound(new { error = "Usuário não encontrado" });
 
+        if(await _caronaRepository.UsuarioJaFazParteDaCarona(idCarona, idUsuario) == true) 
+            return Conflict(new { error = "Usuário já faz parte da carona :(" });
 
         var result = await _caronaRepository.ReservarCarona(idCarona, idUsuario);
         
         if (result == true) return Ok();
 
-        return Conflict(new { error = "Houve ao fazer a reserva da carona :( " }); 
+        return Conflict(new { error = "Houve um erro ao fazer a reserva da carona :( " }); 
     }
     
     

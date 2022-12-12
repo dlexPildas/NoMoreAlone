@@ -32,7 +32,7 @@ CREATE TABLE `no_more_alone_db`.`carona` (
 CREATE TABLE `no_more_alone_db`.`avaliacao_carona` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `Comentario` VARCHAR(250) NULL,
-  `estrela` INT NOT NULL,
+  `Estrela` INT NOT NULL,
   `IdCarona` INT NOT NULL,
   `IdUsuario` INT NOT NULL,
   PRIMARY KEY (`Id`),
@@ -91,3 +91,24 @@ ADD CONSTRAINT `IdEndereco`
   REFERENCES `no_more_alone_db`.`endereco` (`Id`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
+
+
+#Modelo entidade Relacionamento
+
+
+#Modelo Lógico
+User(Id, Nome, Matricula, Telefone, Semestre, Curso, Senha, IdEndereco)
+  IdEndereco References Endereco.Id
+
+Carona(Id, Data, PontoPartida, PontoChegada, QuantidadePessoas, Tipo, Preco, Dono)
+  Dono References User.Id
+
+Avaliacao_carona(Id, Comentario, Estrela, IdCarona, IdUsuario)
+  IdCarona References Carona.Id
+  IdUsuario References User.Id
+
+Endereco(Id, Rua, Bairro, CEP, Numero, Cidade)
+
+carona_user(Id, IdUsuario, IdCarona, DataReserva)
+  IdCarona References Carona.Id
+  IdUsuario References User.Id

@@ -14,9 +14,13 @@ namespace NoMoreAlone.Infra.Repositories
             _connection = connection;
         }
 
-        public async Task<IEnumerable<Carona>> BuscarCaronas()
+        public async Task<IEnumerable<Carona>> BuscarCaronas(DateTime? data, string? origemDestino)
         {
-            string query = $"SELECT * FROM carona;";
+            string query = @$"SELECT * FROM carona
+                              WHERE
+                                1=1 
+                                {(data != null ? $"AND data between '{data.Value.ToString("yyyy-MM-dd 00:00:00")}' AND '{data.Value.ToString("yyyy-MM-dd 23:59:59")}'" : "")}  
+                                {(!string.IsNullOrEmpty(origemDestino) ? $"AND PontoPartida like '%{origemDestino}%' OR PontoChegada like '%{origemDestino}%'"  : "")} ;";
 
             return await _connection.BuscarTodos<Carona>(query);
         }
@@ -24,7 +28,6 @@ namespace NoMoreAlone.Infra.Repositories
         public async Task<Carona> BuscarCaronaPorId(int id)
         {
             string query = $@"SELECT * FROM carona c 
-                            INNER JOIN user u ON c.Dono = u.Id 
                             WHERE c.Id = {id};";
 
             return await _connection.BuscarUnicoObjetoPorFiltro<Carona>(query);
@@ -40,10 +43,10 @@ namespace NoMoreAlone.Infra.Repositories
         public async Task<bool> InserirCarona(Carona carona)
         {
             string query = $@"INSERT INTO carona 
-                            (Data, PontoPartida, PontoChegada, QuantidadePessoas, Tipo, Dono)
+                            (Data, PontoPartida, PontoChegada, QuantidadePessoas, Tipo, Preco, Dono)
                             VALUES (
                                 '{carona.Data.ToString("yyyy-MM-dd HH:mm:ss")}', '{carona.PontoPartida}', '{carona.PontoChegada}', 
-                                {carona.QuantidadePessoas}, '{carona.Tipo.ToString()}', {carona.Dono}
+                                {carona.QuantidadePessoas}, '{carona.Tipo.ToString()}', '{carona.Preco.ToString().Replace(',', '.')}', {carona.Dono}
                             );";
 
             return await _connection.Inserir(query);
@@ -64,6 +67,17 @@ namespace NoMoreAlone.Infra.Repositories
                             );";
 
             return await _connection.Inserir(query);
+        }
+
+        public async Task<bool> UsuarioJaFazParteDaCarona(int idCarona, int idUsuario)
+        {
+            string query = $"SELECT * FROM carona_user WHERE IdUsuario = {idUsuario} AND IdCarona = {idCarona};";
+
+            Carona carona = await _connection.BuscarUnicoObjetoPorFiltro<Carona>(query);
+
+            if(carona != null) return true;
+
+            return false;
         }
     }
 }
