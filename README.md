@@ -12,7 +12,9 @@ CREATE TABLE `no_more_alone_db`.`user` (
   PRIMARY KEY (`Id`)
 );
 </code>
+<br/> <br/>
 
+<code>
 CREATE TABLE `no_more_alone_db`.`carona` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `Data` DATETIME NOT NULL,
@@ -30,7 +32,10 @@ CREATE TABLE `no_more_alone_db`.`carona` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );
+</code>
+<br/> <br/>
 
+<code>
 CREATE TABLE `no_more_alone_db`.`avaliacao_carona` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `Comentario` VARCHAR(250) NULL,
@@ -51,7 +56,10 @@ CREATE TABLE `no_more_alone_db`.`avaliacao_carona` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );
+</code>
+<br/> <br/>
 
+<code>
 CREATE TABLE `no_more_alone_db`.`endereco` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `Rua` VARCHAR(150) NOT NULL,
@@ -61,7 +69,10 @@ CREATE TABLE `no_more_alone_db`.`endereco` (
   `Cidade` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`Id`)
 );
+</code>
+<br/> <br/>
 
+<code>
 CREATE TABLE `no_more_alone_db`.`carona_user` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `IdUsuario` INT NOT NULL,
@@ -81,37 +92,42 @@ CREATE TABLE `no_more_alone_db`.`carona_user` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );
+</code>
+<br/> <br/>
 
-
+<code>
 ALTER TABLE `no_more_alone_db`.`user` 
 ADD COLUMN `IdEndereco` INT NULL AFTER `Curso`,
 ADD INDEX `IdEndereco_idx` (`IdEndereco` ASC) VISIBLE;
-;
+</code>
+<br/> <br/>
+
 ALTER TABLE `no_more_alone_db`.`user` 
 ADD CONSTRAINT `IdEndereco`
   FOREIGN KEY (`IdEndereco`)
   REFERENCES `no_more_alone_db`.`endereco` (`Id`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
-
+</code>
+<br/> <br/>
 
 ## Modelo entidade Relacionamento
 
 
 ## Modelo Lógico
 
-<h5>User</h5>(Id, Nome, Matricula, Telefone, Semestre, Curso, Senha, IdEndereco)
-  IdEndereco <strong>References</strong> Endereco.Id
+Userd(Id, Nome, Matricula, Telefone, Semestre, Curso, Senha, IdEndereco)
+  IdEndereco References Endereco.Id
 
-<h5>Carona</h5>(Id, Data, PontoPartida, PontoChegada, QuantidadePessoas, Tipo, Preco, Dono)
-  Dono <strong>References</strong> User.Id
+Caronad(Id, Data, PontoPartida, PontoChegada, QuantidadePessoas, Tipo, Preco, Dono)
+  Dono References User.Id
 
-<h5>Avaliacao_carona</h5>(Id, Comentario, Estrela, IdCarona, IdUsuario)
-  IdCarona <strong>References</strong> Carona.Id
-  IdUsuario <strong>References</strong> User.Id
+Avaliacao_caronad(Id, Comentario, Estrela, IdCarona, IdUsuario)
+  IdCarona References Carona.Id
+  IdUsuario References User.Id
 
-<h5>Endereco</h5>(Id, Rua, Bairro, CEP, Numero, Cidade)
+Enderecod(Id, Rua, Bairro, CEP, Numero, Cidade)
 
-<h5>carona_user</h5>(Id, IdUsuario, IdCarona, DataReserva)
-  IdCarona <strong>References</strong> Carona.Id
-  IdUsuario <strong>References</strong> User.Id
+carona_userd(Id, IdUsuario, IdCarona, DataReserva)
+  IdCarona References Carona.Id
+  IdUsuario References User.Id
