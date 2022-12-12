@@ -116,18 +116,18 @@ ADD CONSTRAINT `IdEndereco`
 
 ## Modelo Lógico
 
-Userd(Id, Nome, Matricula, Telefone, Semestre, Curso, Senha, IdEndereco)
+<strong>Userd</strong>(Id, Nome, Matricula, Telefone, Semestre, Curso, Senha, IdEndereco)
   IdEndereco References Endereco.Id
 
-Caronad(Id, Data, PontoPartida, PontoChegada, QuantidadePessoas, Tipo, Preco, Dono)
+<strong>Caronad</strong>(Id, Data, PontoPartida, PontoChegada, QuantidadePessoas, Tipo, Preco, Dono)
   Dono References User.Id
 
-Avaliacao_caronad(Id, Comentario, Estrela, IdCarona, IdUsuario)
+<strong>Avaliacao_caronad</strong>(Id, Comentario, Estrela, IdCarona, IdUsuario)
   IdCarona References Carona.Id
   IdUsuario References User.Id
 
-Enderecod(Id, Rua, Bairro, CEP, Numero, Cidade)
+<strong>Enderecod</strong>(Id, Rua, Bairro, CEP, Numero, Cidade)
 
-carona_userd(Id, IdUsuario, IdCarona, DataReserva)
+<strong>carona_user</strong>(Id, IdUsuario, IdCarona, DataReserva)
   IdCarona References Carona.Id
   IdUsuario References User.Id
