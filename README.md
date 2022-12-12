@@ -1,5 +1,6 @@
 ## Banco de dados
 
+<code>
 CREATE TABLE `no_more_alone_db`.`user` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `Nome` VARCHAR(100) NOT NULL,
@@ -10,6 +11,7 @@ CREATE TABLE `no_more_alone_db`.`user` (
   `Senha` VARCHAR(100) NULL,
   PRIMARY KEY (`Id`)
 );
+</code>
 
 CREATE TABLE `no_more_alone_db`.`carona` (
   `Id` INT NOT NULL AUTO_INCREMENT,
@@ -93,22 +95,23 @@ ADD CONSTRAINT `IdEndereco`
   ON UPDATE NO ACTION;
 
 
-#Modelo entidade Relacionamento
+## Modelo entidade Relacionamento
 
 
-#Modelo Lógico
-User(Id, Nome, Matricula, Telefone, Semestre, Curso, Senha, IdEndereco)
-  IdEndereco References Endereco.Id
+## Modelo Lógico
 
-Carona(Id, Data, PontoPartida, PontoChegada, QuantidadePessoas, Tipo, Preco, Dono)
-  Dono References User.Id
+<h5>User</h5>(Id, Nome, Matricula, Telefone, Semestre, Curso, Senha, IdEndereco)
+  IdEndereco <strong>References</strong> Endereco.Id
 
-Avaliacao_carona(Id, Comentario, Estrela, IdCarona, IdUsuario)
-  IdCarona References Carona.Id
-  IdUsuario References User.Id
+<h5>Carona</h5>(Id, Data, PontoPartida, PontoChegada, QuantidadePessoas, Tipo, Preco, Dono)
+  Dono <strong>References</strong> User.Id
 
-Endereco(Id, Rua, Bairro, CEP, Numero, Cidade)
+<h5>Avaliacao_carona</h5>(Id, Comentario, Estrela, IdCarona, IdUsuario)
+  IdCarona <strong>References</strong> Carona.Id
+  IdUsuario <strong>References</strong> User.Id
 
-carona_user(Id, IdUsuario, IdCarona, DataReserva)
-  IdCarona References Carona.Id
-  IdUsuario References User.Id
+<h5>Endereco</h5>(Id, Rua, Bairro, CEP, Numero, Cidade)
+
+<h5>carona_user</h5>(Id, IdUsuario, IdCarona, DataReserva)
+  IdCarona <strong>References</strong> Carona.Id
+  IdUsuario <strong>References</strong> User.Id
