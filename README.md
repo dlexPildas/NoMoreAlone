@@ -14,7 +14,7 @@ project status
 
 <h4> 
 	✅ Versão 1.0.0 Conluída  ✅
-	<br />🚧 Versão 1.2.0 Em contrução  🚧
+	<br/> <br/>🚧 Versão 1.2.0 Em contrução  🚧
 </h4>
 
 
