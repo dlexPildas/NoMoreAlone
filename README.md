@@ -13,7 +13,8 @@ project status
 ==============
 
 <h4> 
-	🚧 Em construção...  🚧
+	✅ Versão 1.0.0 Conluída  ✅
+	🚧 Versão 1.2.0 Em contrução  🚧
 </h4>
 
 
