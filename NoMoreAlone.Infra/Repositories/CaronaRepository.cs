@@ -16,7 +16,8 @@ namespace NoMoreAlone.Infra.Repositories
 
         public async Task<IEnumerable<Carona>> BuscarCaronas(DateTime? data, string? origemDestino)
         {
-            string query = @$"SELECT * FROM carona
+            string query = @$"SELECT c.*, u.Nome NomeDonoCarona FROM carona c
+                              inner join user u on c.Dono = u.Id
                               WHERE
                                 1=1 
                                 {(data != null ? $"AND data between '{data.Value.ToString("yyyy-MM-dd 00:00:00")}' AND '{data.Value.ToString("yyyy-MM-dd 23:59:59")}'" : "")}  
@@ -67,6 +68,13 @@ namespace NoMoreAlone.Infra.Repositories
                             );";
 
             return await _connection.Inserir(query);
+        }
+        
+        public async Task<bool> CancelarReservaCarona(int idCarona, int idPassageiro)
+        {
+            string query = $@"delete from carona_user where IdUsuario = {idPassageiro} and IdCarona = {idCarona};";
+
+            return await _connection.DeletarPorId(query);
         }
 
         public async Task<bool> UsuarioJaFazParteDaCarona(int idCarona, int idUsuario)

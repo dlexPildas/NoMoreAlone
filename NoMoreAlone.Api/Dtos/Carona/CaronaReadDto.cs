@@ -13,6 +13,7 @@ namespace NoMoreAlone.Api.Dtos.Carona
         public double Preco { get; set; }
         public string? Tipo { get;  set; }
         public int Dono { get; set; }
+        public string? NomeDonoCarona { get; set; }
 
         public List<UserReadDto>? Passageiros { get; set; }
     }

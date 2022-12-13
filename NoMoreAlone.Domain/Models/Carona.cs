@@ -12,7 +12,7 @@ namespace NoMoreAlone.Domain.Models
         public TipoCarona Tipo { get; private set; }
         public double Preco { get; set; }
         public int Dono { get; private set; }
-        public User DonoCarona { get; set; }
+        public string NomeDonoCarona { get; set; }
         public List<User>? Passageiros { get; set; }
 
         public Carona() {}

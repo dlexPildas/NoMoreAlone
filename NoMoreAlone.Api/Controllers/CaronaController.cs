@@ -67,6 +67,9 @@ public class CaronaController : ControllerBase
         if(caronasDoUsuario.Any(x => x.Data.Date == caronaCreateDto.Data.Date)) 
             return Conflict(new { error = "Usuário já tem carona cadastrada Hoje" });
 
+        if(caronaCreateDto.Data < DateTime.Now)
+            return Conflict(new { error = "Não é possível criar caronas com Data anterior a data atual" });
+
         var caronaMapeada = _mapper.Map<Carona>(caronaCreateDto);
         var result = await _caronaRepository.InserirCarona(caronaMapeada);
 
@@ -90,14 +93,38 @@ public class CaronaController : ControllerBase
         if (usuarioExiste == null) 
             return NotFound(new { error = "Usuário não encontrado" });
 
+        if(caronaExiste.Data < DateTime.Now)
+            return Conflict(new { error = "Não é possível reservar caronas com Data anterior a data atual" });
+
         if(await _caronaRepository.UsuarioJaFazParteDaCarona(idCarona, idUsuario) == true) 
-            return Conflict(new { error = "Usuário já faz parte da carona :(" });
+            return Conflict(new { error = "Você já faz parte da carona 😒" });
 
         var result = await _caronaRepository.ReservarCarona(idCarona, idUsuario);
         
         if (result == true) return Ok();
 
         return Conflict(new { error = "Houve um erro ao fazer a reserva da carona :( " }); 
+    }
+
+    [HttpDelete("{idCarona}/passageiro/{idUsuario}/cancelar")]
+    public async Task<IActionResult> CancelarReservaCarona(int idCarona, int idUsuario)
+    {
+        var caronaExiste = await _caronaRepository.BuscarCaronaPorId(idCarona);
+        if (caronaExiste == null) 
+            return NotFound(new { error = "A carona não foi encontrada" });
+
+        var usuarioExiste = await _userRepository.BuscarUserPorId(idUsuario);
+        if (usuarioExiste == null) 
+            return NotFound(new { error = "Usuário não encontrado" });
+
+        if(await _caronaRepository.UsuarioJaFazParteDaCarona(idCarona, idUsuario) == false) 
+            return Conflict(new { error = "Passageiro não faz parte da carona 😒" });
+
+        var result = await _caronaRepository.CancelarReservaCarona(idCarona, idUsuario);
+        
+        if (result == true) return Ok();
+
+        return Conflict(new { error = "Houve um erro ao cancelar a reserva da carona :( " }); 
     }
     
     
