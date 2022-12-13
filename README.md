@@ -1,4 +1,52 @@
-## Banco de dados
+Table of contents
+=================
+
+
+* [Status do Projeto](#project-status)
+* [Funcionalidades](#funcionalidades)
+* [Tecnologias](#tecnologias)
+* [Scripts do Banco de Dados](#Banco-de-Dados)
+* [Como Executar](#how-to-run)  
+
+
+project status
+==============
+
+<h4> 
+	🚧 Em construção...  🚧
+</h4>
+
+
+funcionalidades
+========
+
+- [X] Login
+- [X] Visualizar lista de Caronas
+- [X] Ver detalhes de uma Carona
+- [X] Cadastrar Carona
+- [X] Realizar uma reserva de uma carona
+- [X] Cancelar uma reserva
+- [X] Validações
+- [ ] Excluir uma carona
+- [ ] Editar uma carona
+- [ ] Cadastrar novo usuário
+
+
+tecnologias
+=====
+
+Tecnologias utilizadas na construção do projeto
+- [c#](https://learn.microsoft.com/pt-br/dotnet/csharp/)
+- [.Net](https://dotnet.microsoft.com/en-us/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Angular](https://angular.io/)
+- [SQlite](https://www.sqlite.org/index.html)
+
+
+Banco de Dados
+=====
+
+<h4>Scripts</h4>
 
 <code>
 CREATE TABLE `no_more_alone_db`.`user` (
@@ -111,10 +159,10 @@ ADD CONSTRAINT `IdEndereco`
 </code>
 <br/> <br/>
 
-## Modelo entidade Relacionamento
+<h4>Modelo entidade Relacionamento</h4>
 
 
-## Modelo Lógico
+<h4> Modelo Lógico</h4>
 
 <strong>Userd</strong>(Id, Nome, Matricula, Telefone, Semestre, Curso, Senha, IdEndereco)
   IdEndereco References Endereco.Id
