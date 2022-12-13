@@ -46,7 +46,7 @@ Tecnologias utilizadas na construção do projeto
 Banco de Dados
 =====
 
-<h4>Scripts</h4>
+<h3>Scripts</h3>
 
 <code>
 CREATE TABLE `no_more_alone_db`.`user` (
@@ -150,7 +150,7 @@ ADD INDEX `IdEndereco_idx` (`IdEndereco` ASC) VISIBLE;
 </code>
 <br/> <br/>
 
-ALTER TABLE `no_more_alone_db`.`user` 
+<code>ALTER TABLE `no_more_alone_db`.`user` 
 ADD CONSTRAINT `IdEndereco`
   FOREIGN KEY (`IdEndereco`)
   REFERENCES `no_more_alone_db`.`endereco` (`Id`)
@@ -159,23 +159,23 @@ ADD CONSTRAINT `IdEndereco`
 </code>
 <br/> <br/>
 
-<h4>Modelo entidade Relacionamento</h4>
+<h3>Modelo entidade Relacionamento</h3>
 
 
-<h4> Modelo Lógico</h4>
+<h3> Modelo Lógico</h3>
 
 <strong>Userd</strong>(Id, Nome, Matricula, Telefone, Semestre, Curso, Senha, IdEndereco)
-  IdEndereco References Endereco.Id
+  <br/>IdEndereco References Endereco.Id
 
 <strong>Caronad</strong>(Id, Data, PontoPartida, PontoChegada, QuantidadePessoas, Tipo, Preco, Dono)
-  Dono References User.Id
+  <br/>Dono References User.Id
 
 <strong>Avaliacao_caronad</strong>(Id, Comentario, Estrela, IdCarona, IdUsuario)
-  IdCarona References Carona.Id
-  IdUsuario References User.Id
+  <br/>IdCarona References Carona.Id
+  <br/>IdUsuario References User.Id
 
 <strong>Enderecod</strong>(Id, Rua, Bairro, CEP, Numero, Cidade)
 
 <strong>carona_user</strong>(Id, IdUsuario, IdCarona, DataReserva)
-  IdCarona References Carona.Id
-  IdUsuario References User.Id
+  <br/>IdCarona References Carona.Id
+  <br/>IdUsuario References User.Id
